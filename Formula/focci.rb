@@ -1,16 +1,17 @@
 class Focci < Formula
   desc "Refocus your terminal/editor when an AI coding agent needs your attention"
   homepage "https://github.com/HabibUllahKhanBarakzai/focci"
-  url "https://github.com/HabibUllahKhanBarakzai/focci/archive/refs/tags/v0.1.0.tar.gz"
-  sha256 "35f1e2fe4c9149c74fe5713a66476fc504d26422a60b68949e445b26876dd22f"
+  url "https://github.com/HabibUllahKhanBarakzai/focci/archive/refs/tags/v0.2.0.tar.gz"
+  sha256 "4baa5618646575fdf38a1d66d227adea0d08c635c4d3fa2934b504aa67ecb02e"
   license "Apache-2.0"
   head "https://github.com/HabibUllahKhanBarakzai/focci.git", branch: "main"
 
-  depends_on "rust" => :build
+  depends_on "go" => :build
   depends_on :macos
 
   def install
-    system "cargo", "install", *std_cargo_args
+    ldflags = "-s -w -X github.com/HabibUllahKhanBarakzai/focci/cmd.version=#{version}"
+    system "go", "build", *std_go_args(ldflags:, output: bin/"focci"), "."
   end
 
   test do
